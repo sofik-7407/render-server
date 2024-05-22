@@ -4,7 +4,6 @@ const database=require('./www/db/db') // importing database configure file
 const fs=require('fs') // file system module of file read/write
 const path=require('path');
 
-
 const app=express()
 
 const schemaPath='./src/model' //database structure define

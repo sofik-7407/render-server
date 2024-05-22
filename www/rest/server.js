@@ -1,16 +1,18 @@
+const http = require('http'); // Node.js module for creating server
 
-const http=require('http')
-const startServer=(app)=>{
-    const server=http.createServer(app)
+const startServer = (app) => {
+    const server = http.createServer(app); // Creating server with the help of http and express
     
-    server.listen(5000)
-    server.on('listening',()=>{
-        console.log(`server is listening on port :${server.address().port}`)
-    })
-    server.on('error',(err)=>{
-        console.log(`Error : ${err}`)
-    })
-}
-module.exports={
-    startServer:startServer
-}
+    const PORT = process.env.REST_PORT || 5000;
+    server.listen(PORT);
+    server.on('listening', () => {
+        console.log(`Server is listening on port: ${server.address().port}`);
+    });
+    server.on('error', (err) => {
+        console.error('Error:', err.stack);
+    });
+};
+
+module.exports = {
+    startServer: startServer
+};
