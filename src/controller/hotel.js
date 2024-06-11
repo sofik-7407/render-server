@@ -5,13 +5,12 @@ const permissionModel = require('../model/permission');
 const userHotelMappingModle = require("../model/userHotelMapping");
 const responseLib = require("../libs/responseLib");
 const checkLib = require("../libs/checkLib");
-const common = require("../controller/common")
 
 // add new hotel
 const addHotel = async (req, res) => {
   try {
-    const {hotelName,rating,price}=req.body;
-    const hotelId = await common.generateRandomId();
+    const {hotelName,hotelId,rating,price}=req.body;
+    //const hotelId = await common.generateRandomId();
     const newHotel = new hotelModel({
         hotelId,
         hotelName,
@@ -30,15 +29,12 @@ const addHotel = async (req, res) => {
 //Book hotel by it's id
 const bookHotel = async (req, res) => {
     try {
-      const {userId,hotelId,checkIn,checkOut,guests} = req.body;
+      const {userId,bookingId,hotelId,checkIn,checkOut,guests} = req.body;
       const hotel = await hotelModel.findOne({ hotelId,isAvailable: true });
       let message;
-      let data;
-      let bookingId = "";
       if (!checkLib.isEmpty(hotel)) {
         hotel.isAvailable = false;
         await hotel.save();
-        bookingId = common.generateRandomId();
         const userHotelMapping = new userHotelMappingModle({
           bookingId,
           userId,
@@ -70,7 +66,7 @@ const getAvailableHotels = async (req, res) => {
   try {
     const token = req.headers.token;
 
-    let permission = await permissionModel.findOne();
+    let permission = await permissionModel.findOne({});
     if (permission.permission === false) {
       const apiResponse = responseLib.generate(false, "Permission denied by Render server", {});
       return res.status(403).send(apiResponse);
