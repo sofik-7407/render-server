@@ -32,7 +32,7 @@ const bookHotel = async (req, res) => {
       const {userId,bookingId,hotelId,checkIn,checkOut,guests} = req.body;
       const hotel = await hotelModel.findOne({ hotelId,isAvailable: true });
       let message;
-      if (!checkLib.isEmpty(hotel)) {
+      if (hotel) {
         hotel.isAvailable = false;
         await hotel.save();
         const userHotelMapping = new userHotelMappingModle({
@@ -64,8 +64,6 @@ const bookHotel = async (req, res) => {
 //get all the available hotels
 const getAvailableHotels = async (req, res) => {
   try {
-    const token = req.headers.token;
-
     let permission = await permissionModel.findOne({});
     if (permission.permission === false) {
       const apiResponse = responseLib.generate(false, "Permission denied by Render server", {});
@@ -73,7 +71,7 @@ const getAvailableHotels = async (req, res) => {
     }
 
     const response = await axios.get('http://13.127.17.195:5001/get-hotel');  //available hotel list getting from cloud server,here we connect local to cloude server
-    const hotels = response.data.hotels; 
+    const hotels = response.data.hotelList; 
     const message = hotels.length > 0 ? "Available hotels are following" : "No hotel available";
     const apiResponse = { success: true, message, hotels };
     res.status(200).send(apiResponse);
