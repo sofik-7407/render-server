@@ -64,7 +64,7 @@ const bookHotel = async (req, res) => {
 const getAvailableHotels = async (req, res) => {
   try {
     let permission = await permissionModel.findOne({});
-    if (!permission.permission === false) {
+    if (permission.permission === false) {
       const apiResponse = responseLib.generate(false, "Permission denied by Render server", {});
       return res.status(200).send(apiResponse);
     }
