@@ -69,7 +69,7 @@ const getAvailableHotels = async (req, res) => {
       return res.status(200).send(apiResponse);
     }
 
-    const response = await axios.get('http://13.127.17.195:5001/get-hotel');  //available hotel list getting from cloud server,here we connect local to cloude server
+    const response = await axios.get('http://52.66.149.80:5001/get-hotel');  //available hotel list getting from cloud server,here we connect local to cloude server
     const hotels = response.data.hotelList; 
     const message = hotels.length > 0 ? "Available hotels are following" : "No hotel available";
     const apiResponse = { success: true, message, hotels };
