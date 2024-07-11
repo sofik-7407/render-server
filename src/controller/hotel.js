@@ -30,7 +30,7 @@ const addHotel = async (req, res) => {
 const bookHotel = async (req, res) => {
     try {
       const {userId,bookingId,hotelId,checkIn,checkOut,guests} = req.body;
-      const hotel = await hotelModel.findOne({ hotelId,isAvailable: true });
+      const hotel = await hotelModel.find({ hotelId,isAvailable: true });
       let message;
       if (hotel) {
         hotel.isAvailable = false;
